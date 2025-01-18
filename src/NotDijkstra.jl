@@ -22,26 +22,24 @@ end
 
 export make_initial
 function make_initial(n::Int)
+    # All vertices are unreachable
     x = fill(Inf, n)
+    # The first vertex is reachable with zero cost
     x[1] = 0
     return TropicalMinPlus.(x)
 end
 
 export find_costs
-"""
-julia> using NotDijkstra
-julia> A = make_graph(10)
-julia> x = make_initial(10)
-julia> find_costs(A, x)
-"""
 function find_costs(A::AbstractMatrix, x::AbstractVector)
     makenice(a) = round(a.n; digits=3)
     y = x
-    for n in 0:10
-        println("$n: $(makenice.(y))")
-        y = A * y
+    while true
+        println(makenice.(y))
+        ynew = A * y
+        ynew == y && break
+        y = ynew
     end
-    return
+    return y
 end
 
 end
